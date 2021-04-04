@@ -4,8 +4,6 @@ var Razorpay = require("razorpay");
 var bodyParser = require('body-parser');
 const dotenv=require("dotenv");
 const ejs=require("ejs");
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 
 //Creating instance of express
 var app = express();
@@ -24,47 +22,12 @@ app.use('/web', express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-const swaggerOptions={
-    swaggerDefinition:{
-        info:{
-            title: 'Razerpay API',
-            description: 'Razerpay API Documentation',
-            contact: {
-                name: "Priyanka Asrani",
-            },
-            servers: ["http://localhost:3000"]
-        }
-    },
-    apis: ["index.js"]
-}
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 //Routes
-/**
- * @swagger
- * /:
- *  get:
- *      description: Rendering html page 
- *      responses:
- *         '200':
- *              description: HTML Page
- */
 app.get("/",(req,res)=>{
     res.render("payment")
 })
 
 //Creating order
-/**
- * @swagger
- * /api/payment/order:
- *  post:
- *      description: Creating order
- *      responses:
- *         '200':
- *              description: Order_id
- */
 app.post("/api/payment/order",(req,res)=>{
     params=req.body;
     instance.orders.create(params).then((data) => {
